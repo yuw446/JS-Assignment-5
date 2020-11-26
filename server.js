@@ -7,8 +7,14 @@ app.use(express.static('public'));
 
 console.log("Node Server.js is Running.");
 
-let socket = requie('socket.io');
+let socket = require('socket.io');
 
 let io = socket(server);
 
-io.sockets.on('connection', newConnection);
+io.sockets.on('connection', (socket)=>{
+    console.log('new connection found: ' + socket.id);
+
+    socket.on("mouse", (data)=>{
+        socket.broadcast.emit('mouse', data);
+    });
+});
